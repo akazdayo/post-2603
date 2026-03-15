@@ -27,11 +27,17 @@
     {
       devShells = forEachSupportedSystem (
         { pkgs }:
+        let
+          typstFontPaths = [
+            "${pkgs.ipafont}/share/fonts"
+          ];
+        in
         {
           default = pkgs.mkShellNoCC {
             packages =
               with pkgs;
               [
+                ipafont
                 typst
                 typstyle
                 tinymist
@@ -39,6 +45,9 @@
               ++ (with typstPackages; [
                 # Typst packages
               ]);
+
+            # Force Typst to see the bundled static Japanese font in nix develop.
+            TYPST_FONT_PATHS = builtins.concatStringsSep ":" typstFontPaths;
           };
         }
       );

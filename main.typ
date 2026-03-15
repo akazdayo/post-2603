@@ -4,7 +4,7 @@
 )
 
 #set text(
-  font: "Noto Sans CJK JP",
+  font: "IPAGothic",
   size: 22pt,
   fill: rgb("#222222"),
 )
