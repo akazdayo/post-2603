@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typst Poster PDF</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f3f0ea;
+        --panel: rgba(255, 255, 255, 0.86);
+        --text: #1d232b;
+        --muted: #54606d;
+        --line: rgba(29, 35, 43, 0.14);
+        --accent: #8b3d18;
+        --shadow: 0 20px 48px rgba(22, 25, 31, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top, rgba(139, 61, 24, 0.14), transparent 32%),
+          linear-gradient(180deg, #fbf8f3 0%, var(--bg) 100%);
+      }
+
+      main {
+        width: min(1200px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 32px 0 24px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 18px;
+        padding: 20px 24px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: var(--panel);
+        backdrop-filter: blur(10px);
+        box-shadow: var(--shadow);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 3vw, 2.6rem);
+        line-height: 1.1;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 8px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 16px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        background: var(--accent);
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .button.secondary {
+        border-color: var(--line);
+        background: transparent;
+        color: var(--text);
+      }
+
+      .viewer {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: var(--shadow);
+      }
+
+      object {
+        display: block;
+        width: 100%;
+        height: min(88vh, 1400px);
+        background: white;
+      }
+
+      .fallback {
+        padding: 24px;
+      }
+
+      @media (max-width: 720px) {
+        main {
+          width: min(100vw - 20px, 1200px);
+          padding-top: 16px;
+        }
+
+        .hero {
+          padding: 18px;
+          border-radius: 18px;
+        }
+
+        .viewer {
+          border-radius: 18px;
+        }
+
+        object {
+          height: 72vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <h1>Typst Poster</h1>
+        <p>
+          GitHub Actions で生成した PDF を GitHub Pages 上で直接表示しています。
+          埋め込み表示に対応していない環境では、下のリンクから PDF を開いてください。
+        </p>
+        <div class="actions">
+          <a class="button" href="./main.pdf">PDF を開く</a>
+          <a class="button secondary" href="./main.pdf" download>PDF をダウンロード</a>
+        </div>
+      </section>
+
+      <section class="viewer">
+        <object data="./main.pdf#view=FitH" type="application/pdf">
+          <div class="fallback">
+            <p>このブラウザでは PDF 埋め込み表示を利用できません。</p>
+            <p><a href="./main.pdf">main.pdf を開く</a></p>
+          </div>
+        </object>
+      </section>
+    </main>
+  </body>
+</html>
