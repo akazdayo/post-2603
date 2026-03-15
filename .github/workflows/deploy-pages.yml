@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -34,7 +34,7 @@ jobs:
           echo "IPA_FONT_DIR=$(dirname "$font_file")" >> "$GITHUB_ENV"
 
       - name: Setup Typst
-        uses: typst-community/setup-typst@v5
+        uses: typst-community/setup-typst@v4
         with:
           typst-version: 0.14.2
 
