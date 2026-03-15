@@ -1,15 +1,15 @@
 #set page(
   paper: "a0",
-  margin: (x: 12mm, y: 12mm),
+  margin: (x: 8mm, y: 8mm),
 )
 
 #set text(
   font: "Noto Sans CJK JP",
-  size: 13pt,
+  size: 22pt,
   fill: rgb("#222222"),
 )
 
-#set par(justify: false, leading: 0.62em)
+#set par(justify: false, leading: 0.84em)
 #set heading(numbering: none)
 
 #let border = rgb("#444444")
@@ -25,19 +25,19 @@
 
 #let section(title, body, level: 1) = block(
   width: 100%,
-  inset: (x: 3mm, y: 3mm),
+  inset: (x: 4mm, y: 4mm),
 )[
   #text(
-    size: if level == 1 { 18pt } else { 15pt },
+    size: if level == 1 { 32pt } else { 26pt },
     weight: "bold",
   )[
     #heading-prefix(level) #h(1.2mm) #title
   ]
-  #v(if level == 1 { 1.8mm } else { 1.2mm })
+  #v(if level == 1 { 3mm } else { 2.2mm })
   #if level == 1 {
     rule()
   }
-  #v(if level == 1 { 2.5mm } else { 1.6mm })
+  #v(if level == 1 { 4.5mm } else { 3mm })
   #body
 ]
 
@@ -50,55 +50,55 @@
   inset: 0pt,
 )[
   #align(center + horizon)[
-    #text(size: 11pt, fill: rgb("#666666"))[#label]
+    #text(size: 17pt, fill: rgb("#666666"))[#label]
   ]
 ]
 
 #let mini-caption(text-body) = align(center)[
-  #text(size: 10.5pt, fill: rgb("#444444"))[#text-body]
+  #text(size: 16pt, fill: rgb("#444444"))[#text-body]
 ]
 
 #let swatch(color, label) = [
   #align(center)[
-    #circle(radius: 5.5mm, fill: color, stroke: none)
-    #v(1.4mm)
-    #text(size: 10pt)[#label]
+    #circle(radius: 9mm, fill: color, stroke: none)
+    #v(2.5mm)
+    #text(size: 15pt)[#label]
   ]
 ]
 
-#block(inset: 8mm)[
+#block(inset: 4mm)[
   #grid(
     columns: (1fr, auto),
     column-gutter: 10mm,
     align: (left, top),
     [
-      #text(size: 30pt, weight: "bold")[研究発表ポスターのタイトル]
-      #v(2mm)
-      #text(size: 14pt)[著者: 氏名1, 氏名2]
+      #text(size: 60pt, weight: "bold")[研究発表ポスターのタイトル]
+      #v(4mm)
+      #text(size: 28pt)[著者: 氏名1, 氏名2]
       #linebreak()
-      #text(size: 12pt, fill: rgb("#555555"))[所属 / 研究室 / 学会名]
+      #text(size: 22pt, fill: rgb("#555555"))[所属 / 研究室 / 学会名]
     ],
     [
       #rect(
-        width: 30mm,
-        height: 30mm,
+        width: 46mm,
+        height: 46mm,
         stroke: 0.8pt + border,
         fill: white,
       )
-      #v(-27mm)
-      #align(center + horizon)[#text(size: 11pt)[QR]]
-      #v(24mm)
-      #align(center)[#text(size: 9.5pt, fill: rgb("#555555"))[Web / GitHub]]
+      #v(-40mm)
+      #align(center + horizon)[#text(size: 17pt)[QR]]
+      #v(35mm)
+      #align(center)[#text(size: 14pt, fill: rgb("#555555"))[Web / GitHub]]
     ],
   )
 
-  #v(4mm)
+  #v(8mm)
   #rule()
-  #v(4mm)
+  #v(8mm)
 
   #grid(
     columns: (1.18fr, 0.82fr),
-    column-gutter: 8mm,
+    column-gutter: 10mm,
     align: (left, top),
     [
       #section(
@@ -110,7 +110,7 @@
         ],
       )
 
-      #v(3mm)
+      #v(7mm)
 
       #section(
         [研究の目的、難しいトット絵を描くには？],
@@ -120,45 +120,45 @@
         ],
       )
 
-      #v(3mm)
+      #v(7mm)
 
       #section(
         [比較してみる],
         [
           代表的な処理系列を左右に並べ、元画像からどのようにドット絵らしい表現へ変化するかを比較する。
 
-          #v(3mm)
+          #v(7mm)
 
           #grid(
             columns: (1fr, 1fr),
-            column-gutter: 6mm,
+            column-gutter: 8mm,
             [
-              #text(size: 12pt, weight: "bold")[総合絵ドットイラスト変換]
-              #v(2mm)
-              #image-box([元画像], height: 34mm, fill: rgb("#f6e8d6"))
+              #text(size: 20pt, weight: "bold")[総合絵ドットイラスト変換]
+              #v(4mm)
+              #image-box([元画像], height: 72mm, fill: rgb("#f6e8d6"))
               #mini-caption([元画像(モザイク)])
-              #v(1mm)
-              #align(center)[#text(size: 18pt, fill: border)[↓]]
-              #text(size: 11pt)[1. K-Means and Apply]
-              #image-box([中間画像], height: 34mm, fill: rgb("#ede4f5"))
-              #v(1mm)
-              #align(center)[#text(size: 18pt, fill: border)[↓]]
-              #text(size: 11pt)[2. DoG (+ Morphology)]
-              #image-box([出力画像], height: 34mm, fill: rgb("#eadff0"))
+              #v(3mm)
+              #align(center)[#text(size: 30pt, fill: border)[↓]]
+              #text(size: 17pt)[1. K-Means and Apply]
+              #image-box([中間画像], height: 72mm, fill: rgb("#ede4f5"))
+              #v(3mm)
+              #align(center)[#text(size: 30pt, fill: border)[↓]]
+              #text(size: 17pt)[2. DoG (+ Morphology)]
+              #image-box([出力画像], height: 72mm, fill: rgb("#eadff0"))
             ],
             [
-              #text(size: 12pt, weight: "bold")[絵の輪郭ドット大変換]
-              #v(2mm)
-              #image-box([元画像], height: 34mm, fill: rgb("#f2ead7"))
+              #text(size: 20pt, weight: "bold")[絵の輪郭ドット大変換]
+              #v(4mm)
+              #image-box([元画像], height: 72mm, fill: rgb("#f2ead7"))
               #mini-caption([元画像])
-              #v(1mm)
-              #align(center)[#text(size: 18pt, fill: border)[↓]]
-              #text(size: 11pt)[1. 元画像(モザイク)]
-              #image-box([中間画像], height: 34mm, fill: rgb("#ece6d5"))
-              #v(1mm)
-              #align(center)[#text(size: 18pt, fill: border)[↓]]
-              #text(size: 11pt)[2. K-Means and Apply]
-              #image-box([出力画像], height: 34mm, fill: rgb("#efe5c8"))
+              #v(3mm)
+              #align(center)[#text(size: 30pt, fill: border)[↓]]
+              #text(size: 17pt)[1. 元画像(モザイク)]
+              #image-box([中間画像], height: 72mm, fill: rgb("#ece6d5"))
+              #v(3mm)
+              #align(center)[#text(size: 30pt, fill: border)[↓]]
+              #text(size: 17pt)[2. K-Means and Apply]
+              #image-box([出力画像], height: 72mm, fill: rgb("#efe5c8"))
             ],
           )
         ],
@@ -173,7 +173,7 @@
         ],
       )
 
-      #v(3mm)
+      #v(7mm)
 
       #section(
         [Lab色空間とは？],
@@ -181,10 +181,10 @@
           Lab色空間は知覚的に均一な色差を扱いやすく、RGBよりも「似た色」をまとめやすい。
           そのため量子化前の前処理として相性がよい。
 
-          #v(2mm)
+          #v(4mm)
           #grid(
             columns: (1fr, 1fr, 1fr),
-            column-gutter: 3mm,
+            column-gutter: 5mm,
             [#swatch(rgb("#c32121"), [L 53.2])],
             [#swatch(rgb("#e75b5b"), [a 79.1])],
             [#swatch(rgb("#f5b3b3"), [b 18.4])],
@@ -193,7 +193,7 @@
         level: 2,
       )
 
-      #v(3mm)
+      #v(7mm)
 
       #section(
         [K-Meansとは？],
@@ -201,22 +201,22 @@
           K-Means は画素群を代表色へ集約するクラスタリング手法である。
           色数を固定しやすく、ドット絵らしい簡潔な色面を作りやすい。
 
-          #v(2mm)
+          #v(4mm)
           #grid(
             columns: (0.62fr, 0.38fr),
-            column-gutter: 4mm,
+            column-gutter: 5mm,
             [
               処理前後で使用色数を管理しやすく、比較対象を揃えた実験にも向いている。
             ],
             [
-              #image-box([クラスタ分布図], height: 32mm, fill: rgb("#f6f0f0"))
+              #image-box([クラスタ分布図], height: 64mm, fill: rgb("#f6f0f0"))
             ],
           )
         ],
         level: 2,
       )
 
-      #v(3mm)
+      #v(7mm)
 
       #section(
         [エッジ検出について],
@@ -227,7 +227,7 @@
         level: 2,
       )
 
-      #v(3mm)
+      #v(7mm)
 
       #section(
         [結果],
@@ -235,24 +235,24 @@
           画像の簡略化と輪郭保持のバランスを比較したところ、輪郭抽出を併用した条件で「読み取りやすさ」が向上した。
           一方で、細部の多い画像ではクラスタ数の設定により印象が大きく変化した。
 
-          #v(3mm)
+          #v(5mm)
           #grid(
             columns: (1fr, 1fr, 1fr),
-            column-gutter: 4mm,
+            column-gutter: 5mm,
             [
-              #image-box([結果1], height: 28mm, fill: rgb("#d5edf4"))
+              #image-box([結果1], height: 58mm, fill: rgb("#d5edf4"))
             ],
             [
-              #image-box([結果2], height: 28mm, fill: rgb("#e9ddb2"))
+              #image-box([結果2], height: 58mm, fill: rgb("#e9ddb2"))
             ],
             [
-              #image-box([結果3], height: 28mm, fill: rgb("#cde1f9"))
+              #image-box([結果3], height: 58mm, fill: rgb("#cde1f9"))
             ],
           )
         ],
       )
 
-      #v(3mm)
+      #v(7mm)
 
       #section(
         [参考文献],
