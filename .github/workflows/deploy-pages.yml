@@ -38,10 +38,11 @@ jobs:
         with:
           typst-version: 0.14.2
 
-      - name: Build PDF for Pages
+      - name: Build PDF and redirect page for Pages
         run: |
           mkdir -p _site
           typst compile main.typ _site/main.pdf --font-path "$IPA_FONT_DIR"
+          cp index.html _site/index.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
