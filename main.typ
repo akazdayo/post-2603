@@ -1,173 +1,269 @@
 #set page(
   paper: "a0",
-  margin: (x: 20mm, y: 18mm),
+  margin: (x: 12mm, y: 12mm),
 )
 
 #set text(
   font: "Noto Sans CJK JP",
-  size: 18pt,
+  size: 13pt,
+  fill: rgb("#222222"),
 )
 
-#set par(justify: false, leading: 0.75em)
+#set par(justify: false, leading: 0.62em)
 #set heading(numbering: none)
 
-#let poster-title = [
-  #align(center)[
-    #text(size: 34pt, weight: "bold")[研究発表ポスターのタイトル]
-    #v(6mm)
-    #text(size: 18pt)[氏名1, 氏名2, 氏名3]
-    #linebreak()
-    #text(size: 16pt, fill: rgb("#444444"))[所属 / 研究室 / 学会名]
-  ]
-]
+#let border = rgb("#444444")
+#let light = rgb("#f7f7f7")
 
-#let section(title, body) = block(
+#let rule() = line(length: 100%, stroke: 0.8pt + border)
+
+#let heading-prefix(level) = if level == 1 {
+  [#sym.hash]
+} else {
+  [#sym.hash#sym.hash]
+}
+
+#let section(title, body, level: 1) = block(
   width: 100%,
-  inset: 10mm,
-  radius: 4mm,
-  stroke: 0.8pt + rgb("#d9d9d9"),
-  fill: rgb("#fbfbfb"),
+  inset: (x: 3mm, y: 3mm),
 )[
-  #text(size: 22pt, weight: "bold", fill: rgb("#17324d"))[#title]
-  #v(4mm)
+  #text(
+    size: if level == 1 { 18pt } else { 15pt },
+    weight: "bold",
+  )[
+    #heading-prefix(level) #h(1.2mm) #title
+  ]
+  #v(if level == 1 { 1.8mm } else { 1.2mm })
+  #if level == 1 {
+    rule()
+  }
+  #v(if level == 1 { 2.5mm } else { 1.6mm })
   #body
 ]
 
-#let bullet(items) = list(..items.map(item => [#item]))
+#let image-box(label, height: 42mm, fill: rgb("#f1f1f1")) = rect(
+  width: 100%,
+  height: height,
+  radius: 1.5mm,
+  stroke: 0.6pt + rgb("#cfcfcf"),
+  fill: fill,
+  inset: 0pt,
+)[
+  #align(center + horizon)[
+    #text(size: 11pt, fill: rgb("#666666"))[#label]
+  ]
+]
 
-#poster-title
+#let mini-caption(text-body) = align(center)[
+  #text(size: 10.5pt, fill: rgb("#444444"))[#text-body]
+]
 
-#v(10mm)
+#let swatch(color, label) = [
+  #align(center)[
+    #circle(radius: 5.5mm, fill: color, stroke: none)
+    #v(1.4mm)
+    #text(size: 10pt)[#label]
+  ]
+]
 
-#grid(
-  columns: (1fr, 1fr),
-  gutter: 10mm,
-  [
-    #section(
-      [1. 背景・目的],
-      [
-        #bullet((
-          [研究背景を2〜3文で簡潔に書く],
-          [先行研究や実務上の課題を整理する],
-          [この研究で明らかにしたい目的を1文で示す],
-        ))
+#block(inset: 8mm)[
+  #grid(
+    columns: (1fr, auto),
+    column-gutter: 10mm,
+    align: (left, top),
+    [
+      #text(size: 30pt, weight: "bold")[研究発表ポスターのタイトル]
+      #v(2mm)
+      #text(size: 14pt)[著者: 氏名1, 氏名2]
+      #linebreak()
+      #text(size: 12pt, fill: rgb("#555555"))[所属 / 研究室 / 学会名]
+    ],
+    [
+      #rect(
+        width: 30mm,
+        height: 30mm,
+        stroke: 0.8pt + border,
+        fill: white,
+      )
+      #v(-27mm)
+      #align(center + horizon)[#text(size: 11pt)[QR]]
+      #v(24mm)
+      #align(center)[#text(size: 9.5pt, fill: rgb("#555555"))[Web / GitHub]]
+    ],
+  )
 
-        #v(5mm)
-        #text(weight: "bold")[主張]
-        #par()[本研究は、〇〇という課題に対して△△の観点から検討する。]
-      ],
-    )
+  #v(4mm)
+  #rule()
+  #v(4mm)
 
-    #v(8mm)
+  #grid(
+    columns: (1.18fr, 0.82fr),
+    column-gutter: 8mm,
+    align: (left, top),
+    [
+      #section(
+        [はじめに],
+        [
+          本研究では、アルゴリズム処理を組み合わせてドット絵風の画像を生成する流れを示す。
+          先行手法では色数の制御、輪郭の残し方、描画の粗さの調整が個別に扱われることが多い。
+          そこで本研究では、色空間変換・クラスタリング・輪郭抽出を組み合わせた処理系として整理する。
+        ],
+      )
 
-    #section(
-      [2. 研究課題 / 仮説],
-      [
-        #bullet((
-          [RQ1: 何を比較・検証するのか],
-          [RQ2: どの条件で差が出ると予想するのか],
-          [必要なら仮説 H1, H2 を短く置く],
-        ))
-      ],
-    )
+      #v(3mm)
 
-    #v(8mm)
+      #section(
+        [研究の目的、難しいトット絵を描くには？],
+        [
+          研究目的は、写真やイラストから「ドット絵らしさ」を保ったまま簡潔な表現へ落とし込むことである。
+          本ポスターでは、色のまとめ方と輪郭の残し方がどのように見た目へ影響するかを示す。
+        ],
+      )
 
-    #section(
-      [3. 方法],
-      [
-        #bullet((
-          [対象: 実験参加者、データセット、資料など],
-          [手順: 実験・調査・解析の流れ],
-          [条件: 比較群、評価指標、使用ツール],
-        ))
+      #v(3mm)
 
-        #v(4mm)
-        #rect(
-          width: 100%,
-          height: 45mm,
-          stroke: 1pt + rgb("#b8c4d0"),
-          fill: rgb("#eef4f8"),
-        )
-        #align(center)[#text(size: 14pt, fill: rgb("#4f6478"))[ここに手法フロー図]]
-      ],
-    )
+      #section(
+        [比較してみる],
+        [
+          代表的な処理系列を左右に並べ、元画像からどのようにドット絵らしい表現へ変化するかを比較する。
 
-    #v(8mm)
+          #v(3mm)
 
-    #section(
-      [4. 結果],
-      [
-        #text(weight: "bold", fill: rgb("#8a1c1c"))[最重要結果を先に書く]
-        #par()[提案手法はベースラインより〇〇%高い性能を示した、など結論が伝わる1文を置く。]
+          #grid(
+            columns: (1fr, 1fr),
+            column-gutter: 6mm,
+            [
+              #text(size: 12pt, weight: "bold")[総合絵ドットイラスト変換]
+              #v(2mm)
+              #image-box([元画像], height: 34mm, fill: rgb("#f6e8d6"))
+              #mini-caption([元画像(モザイク)])
+              #v(1mm)
+              #align(center)[#text(size: 18pt, fill: border)[↓]]
+              #text(size: 11pt)[1. K-Means and Apply]
+              #image-box([中間画像], height: 34mm, fill: rgb("#ede4f5"))
+              #v(1mm)
+              #align(center)[#text(size: 18pt, fill: border)[↓]]
+              #text(size: 11pt)[2. DoG (+ Morphology)]
+              #image-box([出力画像], height: 34mm, fill: rgb("#eadff0"))
+            ],
+            [
+              #text(size: 12pt, weight: "bold")[絵の輪郭ドット大変換]
+              #v(2mm)
+              #image-box([元画像], height: 34mm, fill: rgb("#f2ead7"))
+              #mini-caption([元画像])
+              #v(1mm)
+              #align(center)[#text(size: 18pt, fill: border)[↓]]
+              #text(size: 11pt)[1. 元画像(モザイク)]
+              #image-box([中間画像], height: 34mm, fill: rgb("#ece6d5"))
+              #v(1mm)
+              #align(center)[#text(size: 18pt, fill: border)[↓]]
+              #text(size: 11pt)[2. K-Means and Apply]
+              #image-box([出力画像], height: 34mm, fill: rgb("#efe5c8"))
+            ],
+          )
+        ],
+      )
+    ],
+    [
+      #section(
+        [技術説明],
+        [
+          本研究で採用するドット絵生成アルゴリズムは、主に3つの重要な技術要素から構成されている。
+          色表現の整理、代表色への集約、輪郭情報の保持をそれぞれ独立に扱い、最後に組み合わせる。
+        ],
+      )
 
-        #v(4mm)
-        #rect(
-          width: 100%,
-          height: 54mm,
-          stroke: 1pt + rgb("#d2b5b5"),
-          fill: rgb("#fbefef"),
-        )
-        #align(center)[#text(size: 14pt, fill: rgb("#8a4a4a"))[ここに主要グラフ]]
+      #v(3mm)
 
-        #v(4mm)
-        #bullet((
-          [結果1: 指標Aの変化],
-          [結果2: 条件間比較],
-          [結果3: 補足的な観察],
-        ))
-      ],
-    )
+      #section(
+        [Lab色空間とは？],
+        [
+          Lab色空間は知覚的に均一な色差を扱いやすく、RGBよりも「似た色」をまとめやすい。
+          そのため量子化前の前処理として相性がよい。
 
-    #v(8mm)
+          #v(2mm)
+          #grid(
+            columns: (1fr, 1fr, 1fr),
+            column-gutter: 3mm,
+            [#swatch(rgb("#c32121"), [L 53.2])],
+            [#swatch(rgb("#e75b5b"), [a 79.1])],
+            [#swatch(rgb("#f5b3b3"), [b 18.4])],
+          )
+        ],
+        level: 2,
+      )
 
-    #section(
-      [5. 考察],
-      [
-        #bullet((
-          [結果から何が言えるか],
-          [なぜその傾向になったか],
-          [先行研究との一致 / 相違],
-        ))
-      ],
-    )
-  ],
-  [
-    #section(
-      [6. 結論],
-      [
-        #bullet((
-          [結論1: 最も重要な知見],
-          [結論2: 学術的 / 実用的な意義],
-          [結論3: 読者に持ち帰ってほしい点],
-        ))
-      ],
-    )
+      #v(3mm)
 
-    #v(8mm)
+      #section(
+        [K-Meansとは？],
+        [
+          K-Means は画素群を代表色へ集約するクラスタリング手法である。
+          色数を固定しやすく、ドット絵らしい簡潔な色面を作りやすい。
 
-    #section(
-      [7. 今後の課題],
-      [
-        #bullet((
-          [サンプル数や条件設定の限界],
-          [別データ / 別条件での検証],
-          [応用や発展可能性],
-        ))
-      ],
-    )
+          #v(2mm)
+          #grid(
+            columns: (0.62fr, 0.38fr),
+            column-gutter: 4mm,
+            [
+              処理前後で使用色数を管理しやすく、比較対象を揃えた実験にも向いている。
+            ],
+            [
+              #image-box([クラスタ分布図], height: 32mm, fill: rgb("#f6f0f0"))
+            ],
+          )
+        ],
+        level: 2,
+      )
 
-    #v(8mm)
+      #v(3mm)
 
-    #section(
-      [8. 参考文献・謝辞・連絡先],
-      [
-        #bullet((
-          [参考文献は3〜5件程度に絞る],
-          [謝辞を書く],
-          [メールアドレスやQRコードを置く],
-        ))
-      ],
-    )
-  ],
-)
+      #section(
+        [エッジ検出について],
+        [
+          DoG や Sobel を用いて輪郭候補を抽出し、必要に応じてモルフォロジー処理で線を整える。
+          色数削減だけでは失われる境界情報を補うことで、ドット絵らしい視認性を確保する。
+        ],
+        level: 2,
+      )
+
+      #v(3mm)
+
+      #section(
+        [結果],
+        [
+          画像の簡略化と輪郭保持のバランスを比較したところ、輪郭抽出を併用した条件で「読み取りやすさ」が向上した。
+          一方で、細部の多い画像ではクラスタ数の設定により印象が大きく変化した。
+
+          #v(3mm)
+          #grid(
+            columns: (1fr, 1fr, 1fr),
+            column-gutter: 4mm,
+            [
+              #image-box([結果1], height: 28mm, fill: rgb("#d5edf4"))
+            ],
+            [
+              #image-box([結果2], height: 28mm, fill: rgb("#e9ddb2"))
+            ],
+            [
+              #image-box([結果3], height: 28mm, fill: rgb("#cde1f9"))
+            ],
+          )
+        ],
+      )
+
+      #v(3mm)
+
+      #section(
+        [参考文献],
+        [
+          [1] 著者名, 論文タイトル, 学会名, 20XX.
+          #linebreak()
+          [2] 著者名, 書籍タイトル, 出版社, 20XX.
+          #linebreak()
+          [3] URL やデータセット情報をここに置く。
+        ],
+      )
+    ],
+  )
+]
