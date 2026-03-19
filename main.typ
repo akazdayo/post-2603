@@ -134,6 +134,8 @@
         [手法],
         [
           まず、#link("https://github.com/isarandi/metrabs")[MeTRAbs] を用いて単眼カメラ映像から人体姿勢を推定し、立体空間上の身体位置データへ変換した。次に、そのデータをGodotへ送信し、最終的にVRChat OSCを通してFBT用のトラッキングデータとして送信した。
+          #v(3mm)
+          #image("assets/vrchat-tracking-demo.png", width: 100%)
         ],
         level: 2,
       )
