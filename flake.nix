@@ -10,6 +10,10 @@
     };
 
     flake-utils.url = "github:numtide/flake-utils";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Example of downloading icons from a non-flake source
     # font-awesome = {
@@ -22,6 +26,7 @@
     nixpkgs,
     typix,
     flake-utils,
+    self,
     ...
   }:
     flake-utils.lib.eachDefaultSystem (system: let
@@ -29,6 +34,12 @@
       inherit (pkgs) lib;
 
       typixLib = typix.lib.${system};
+      treefmtEval = inputs."treefmt-nix".lib.evalModule pkgs {
+        projectRootFile = "flake.nix";
+
+        programs.alejandra.enable = true;
+        programs.typstyle.enable = true;
+      };
 
       myTypstSource = typixLib.cleanTypstSource ./.;
       src = lib.fileset.toSource {
@@ -82,6 +93,7 @@
     in {
       checks = {
         inherit build-drv build-script watch-script;
+        formatting = treefmtEval.config.build.check self;
       };
 
       packages.default = build-drv;
@@ -104,9 +116,15 @@
           # build-script
           watch-script
           pkgs.ipafont
-          # More packages can be added here, like typstfmt
-          # pkgs.typstfmt
+          pkgs.lefthook
+          treefmtEval.config.build.wrapper
         ];
+
+        shellHook = ''
+          lefthook install
+        '';
       };
+
+      formatter = treefmtEval.config.build.wrapper;
     });
 }

@@ -74,7 +74,10 @@
     column-gutter: 10mm,
     align: (left, top),
     [
-      #text(size: 60pt, weight: "bold")[単眼カメラを用いたVR向け仮想トラッカーの制作]
+      #text(
+        size: 60pt,
+        weight: "bold",
+      )[単眼カメラを用いたVR向け仮想トラッカーの制作]
       #v(4mm)
       #text(size: 28pt)[著者: 野田蒼馬]
       #linebreak()
@@ -89,7 +92,10 @@
       )
       #v(2mm)
       #align(center)[#text(size: 14pt, fill: rgb("#555555"))[GitHub]]
-      #align(center)[#text(size: 14pt, fill: rgb("#555555"))[github.com/akazdayo/post-2603]]
+      #align(center)[#text(
+        size: 14pt,
+        fill: rgb("#555555"),
+      )[github.com/akazdayo/post-2603]]
     ],
   )
 
