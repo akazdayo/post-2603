@@ -60,6 +60,31 @@
   #text(size: 16pt, fill: rgb("#444444"))[#text-body]
 ]
 
+#let qr-panel(url, label: "GitHub") = align(center + top)[
+  #block(width: 64mm)[
+    #align(center)[
+      #qrcode(
+        url,
+        quiet-zone: true,
+        background-fill: white,
+        width: 46mm,
+      )
+    ]
+    #v(2.5mm)
+    #align(center)[
+      #text(size: 14pt, fill: rgb("#555555"), font: "Noto Sans")[#label]
+    ]
+    #v(0.8mm)
+    #align(center)[
+      #text(
+        size: 11.5pt,
+        fill: rgb("#555555"),
+        font: "Noto Sans",
+      )[#url]
+    ]
+  ]
+]
+
 #let swatch(color, label) = [
   #align(center)[
     #circle(radius: 9mm, fill: color, stroke: none)
@@ -84,18 +109,7 @@
       #text(size: 22pt, fill: rgb("#555555"))[N高等学校]
     ],
     [
-      #qrcode(
-        "https://github.com/akazdayo/post-2603",
-        quiet-zone: true,
-        background-fill: white,
-        width: 46mm,
-      )
-      #v(2mm)
-      #align(center)[#text(size: 14pt, fill: rgb("#555555"))[GitHub]]
-      #align(center)[#text(
-        size: 14pt,
-        fill: rgb("#555555"),
-      )[github.com/akazdayo/post-2603]]
+      #qr-panel("github.com/akazdayo/post-2603")
     ],
   )
 
@@ -150,7 +164,9 @@
           #parbreak()
           このように、本研究では「単眼映像の取得」「3D姿勢推定」「座標系の補正」「VR向け信号としての送信」を一連のリアルタイム処理パイプラインとして構成した。
           #v(3mm)
-          #image("assets/vrchat-tracking-demo.png", width: 100%)
+          #align(center)[
+            #image("assets/vrchat-tracking-demo.png", width: 78%)
+          ]
         ],
         level: 2,
       )
