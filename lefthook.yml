@@ -2,5 +2,5 @@ pre-commit:
   jobs:
     - name: nix fmt
       glob: "*.nix"
-      run: nix fmt -- {staged_files}
+      run: nix fmt -- {staged_files} && git add {staged_files}
       stage_fixed: true
