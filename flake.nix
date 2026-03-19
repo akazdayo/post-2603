@@ -1,55 +1,112 @@
 {
-  description = "A Nix-flake-based Typst development environment";
+  description = "A Typst project";
 
-  inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1"; # unstable Nixpkgs
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-  outputs =
-    { self, ... }@inputs:
-
-    let
-      supportedSystems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
-      forEachSupportedSystem =
-        f:
-        inputs.nixpkgs.lib.genAttrs supportedSystems (
-          system:
-          f {
-            pkgs = import inputs.nixpkgs {
-              inherit system;
-            };
-          }
-        );
-    in
-    {
-      devShells = forEachSupportedSystem (
-        { pkgs }:
-        let
-          typstFontPaths = [
-            "${pkgs.ipafont}/share/fonts"
-          ];
-        in
-        {
-          default = pkgs.mkShellNoCC {
-            packages =
-              with pkgs;
-              [
-                ipafont
-                typst
-                typstyle
-                tinymist
-              ]
-              ++ (with typstPackages; [
-                # Typst packages
-              ]);
-
-            # Force Typst to see the bundled static Japanese font in nix develop.
-            TYPST_FONT_PATHS = builtins.concatStringsSep ":" typstFontPaths;
-          };
-        }
-      );
+    typix = {
+      url = "github:loqusion/typix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    flake-utils.url = "github:numtide/flake-utils";
+
+    # Example of downloading icons from a non-flake source
+    # font-awesome = {
+    #   url = "github:FortAwesome/Font-Awesome";
+    #   flake = false;
+    # };
+  };
+
+  outputs = inputs @ {
+    nixpkgs,
+    typix,
+    flake-utils,
+    ...
+  }:
+    flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = nixpkgs.legacyPackages.${system};
+      inherit (pkgs) lib;
+
+      typixLib = typix.lib.${system};
+
+      myTypstSource = typixLib.cleanTypstSource ./.;
+      src = lib.fileset.toSource {
+        root = ./.;
+        fileset = lib.fileset.unions [
+          (lib.fileset.fromSource myTypstSource)
+          ./assets
+        ];
+      };
+      commonArgs = {
+        typstSource = "main.typ";
+
+        fontPaths = [
+          "${pkgs.ipafont}/share/fonts"
+        ];
+
+        virtualPaths = [
+          # Add paths that must be locally accessible to typst here
+          # {
+          #   dest = "icons";
+          #   src = "${inputs.font-awesome}/svgs/regular";
+          # }
+        ];
+      };
+      unstable_typstPackages = [
+        {
+          name = "zebra";
+          version = "0.1.0";
+          hash = "sha256-0mdevuzQHyEoEOmd0J6xRPaQtHNUxxDk3FGbikcrTeg=";
+        }
+      ];
+
+      # Compile a Typst project, *without* copying the result
+      # to the current directory
+      build-drv = typixLib.buildTypstProject (commonArgs
+        // {
+          inherit src;
+          inherit unstable_typstPackages;
+        });
+
+      # Compile a Typst project, and then copy the result
+      # to the current directory
+      build-script = typixLib.buildTypstProjectLocal (commonArgs
+        // {
+          inherit src;
+          inherit unstable_typstPackages;
+        });
+
+      # Watch a project and recompile on changes
+      watch-script = typixLib.watchTypstProject commonArgs;
+    in {
+      checks = {
+        inherit build-drv build-script watch-script;
+      };
+
+      packages.default = build-drv;
+
+      apps = rec {
+        default = watch;
+        build = flake-utils.lib.mkApp {
+          drv = build-script;
+        };
+        watch = flake-utils.lib.mkApp {
+          drv = watch-script;
+        };
+      };
+
+      devShells.default = typixLib.devShell {
+        inherit (commonArgs) fontPaths virtualPaths;
+        packages = [
+          # WARNING: Don't run `typst-build` directly, instead use `nix run .#build`
+          # See https://github.com/loqusion/typix/issues/2
+          # build-script
+          watch-script
+          pkgs.ipafont
+          # More packages can be added here, like typstfmt
+          # pkgs.typstfmt
+        ];
+      };
+    });
 }

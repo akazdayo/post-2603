@@ -23,25 +23,14 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Install Japanese fonts
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y fonts-ipafont-gothic
-
-      - name: Resolve Typst font path
-        run: |
-          font_file="$(fc-match -f '%{file}\n' IPAGothic)"
-          echo "IPA_FONT_DIR=$(dirname "$font_file")" >> "$GITHUB_ENV"
-
-      - name: Setup Typst
-        uses: typst-community/setup-typst@v4
-        with:
-          typst-version: 0.14.2
+      - name: Install Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
 
       - name: Build PDF and redirect page for Pages
         run: |
           mkdir -p _site
-          typst compile main.typ _site/main.pdf --font-path "$IPA_FONT_DIR"
+          nix run .#build
+          cp main.pdf _site/main.pdf
           cp index.html _site/index.html
 
       - name: Upload Pages artifact

@@ -1,5 +1,2 @@
 *.pdf
-*.png
-!poster.png
-!preview.png
-!qr.png
+result*
