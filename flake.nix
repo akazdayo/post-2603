@@ -57,7 +57,7 @@
         {
           name = "zebra";
           version = "0.1.0";
-          hash = "sha256-0mdevuzQHyEoEOmd0J6xRPaQtHNUxxDk3FGbikcrTeg=";
+          hash = "sha256-Z2rDhzO+MMVwHCQvOZClxmyzextcPvPR3zRw5PS2C7U=";
         }
       ];
 
