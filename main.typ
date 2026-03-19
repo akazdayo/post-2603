@@ -1,3 +1,5 @@
+#import "@preview/zebra:0.1.0": qrcode
+
 #set page(
   paper: "a0",
   margin: (x: 8mm, y: 8mm),
@@ -79,10 +81,15 @@
       #text(size: 22pt, fill: rgb("#555555"))[N高等学校]
     ],
     [
-      #image("qr.png", width: 46mm)
+      #qrcode(
+        "https://github.com/akazdayo/post-2603",
+        quiet-zone: true,
+        background-fill: white,
+        width: 46mm,
+      )
       #v(2mm)
       #align(center)[#text(size: 14pt, fill: rgb("#555555"))[GitHub]]
-      #align(center)[#text(size: 14pt, fill: rgb("#555555"))[github.com/akazdayo]]
+      #align(center)[#text(size: 14pt, fill: rgb("#555555"))[github.com/akazdayo/post-2603]]
     ],
   )
 
