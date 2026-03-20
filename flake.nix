@@ -70,6 +70,11 @@
           version = "0.1.0";
           hash = "sha256-Z2rDhzO+MMVwHCQvOZClxmyzextcPvPR3zRw5PS2C7U=";
         }
+        {
+          name = "mmdr";
+          version = "0.2.1";
+          hash = "sha256-RQQsoqftwanuqN6GglxymDcO2dBcoIgSzqHvIjm1GfA=";
+        }
       ];
 
       # Compile a Typst project, *without* copying the result

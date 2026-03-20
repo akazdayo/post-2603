@@ -1,4 +1,5 @@
 #import "@preview/zebra:0.1.0": qrcode
+#import "@preview/mmdr:0.2.1": mermaid
 
 #set page(
   paper: "a0",
@@ -165,6 +166,16 @@
           このように、本研究では「単眼映像の取得」「3D姿勢推定」「座標系の補正」「VR向け信号としての送信」を一連のリアルタイム処理パイプラインとして構成した。
           #v(3mm)
           #align(center)[
+            #mermaid(
+              "flowchart LR\n  cam[Web Camera] --> metrabs[MeTRAbs]\n  metrabs --> adjust[Coordinate Fix]\n  adjust --> godot[Godot]\n  godot --> osc[VRChat OSC]",
+            )
+          ]
+          #v(1.5mm)
+          #mini-caption[
+            処理パイプラインを Mermaid で図示した。
+          ]
+          #v(3mm)
+          #align(center)[
             #image("assets/vrchat-tracking-demo.png", width: 78%)
           ]
         ],
@@ -190,11 +201,14 @@
         [
           実験の結果、推定された関節位置の精度そのものは比較的良好であり、身体の大まかな動きや重心移動をVR上のアバターに反映できることが確認された。特に、腰や脚の位置変化といった基本的な運動については、フルトラッキングらしい挙動を一定程度再現することができた。
           #parbreak()
-          一方で、MeTRAbsからは関節の回転軸情報を直接取得できないため、VR側で求められるトラッカー情報としては不足が生じた。また、推定処理から送信までの過程で無視できないタイムラグが発生し、素早い動作では追従性の低下が見られた。
+          一方で、MeTRAbsからは関節の回転軸情報を直接取得できないため、VR側で求められるトラッカー情報としては不足が生じた。また、推定処理から送信までの過程で無視できないタイムラグが発生し、素早い動作では追従性の低下が見られた。推論時間を比較したところ、アイドル時の平均は 51.17 ms、ゲーム実行時の平均は 85.18 ms となり、実行負荷の増加に伴って遅延が拡大する傾向が確認された。
           #parbreak()
           さらに、既存のVR機器が出力するトラッキングデータとの整合を取ることが難しく、他方式との併用や統合には追加の工夫が必要であることが明らかになった。
           #v(3mm)
-          #image("assets/inference_center_n500_overlay_elapsed_avg.png", width: 100%)
+          #image(
+            "assets/inference_center_n500_overlay_elapsed_avg.png",
+            width: 100%,
+          )
           #v(1.5mm)
           #mini-caption[
             推論時間の比較。アイドル時に対してゲーム実行時は平均遅延が増加し、追従性の低下が見られた。
