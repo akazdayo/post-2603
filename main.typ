@@ -61,6 +61,35 @@
   #text(size: 16pt, fill: rgb("#444444"))[#text-body]
 ]
 
+#let flow-arrow() = align(center + horizon)[
+  #text(size: 28pt, weight: "bold", fill: border)[#sym.arrow.r]
+]
+
+#let demo-flow() = align(center)[
+  #grid(
+    columns: (1fr, auto, 1fr, auto, 1fr),
+    column-gutter: 2.5mm,
+    align: (center, center),
+    [
+      #image("assets/real-tracking-demo.png", width: 100%)
+      #v(1.2mm)
+      #mini-caption[実カメラ映像]
+    ],
+    [#flow-arrow()],
+    [
+      #image("assets/poses.png", width: 100%)
+      #v(1.2mm)
+      #mini-caption[姿勢推定結果]
+    ],
+    [#flow-arrow()],
+    [
+      #image("assets/vrchat-tracking-demo.png", width: 100%)
+      #v(1.2mm)
+      #mini-caption[VRChat 反映結果]
+    ],
+  )
+]
+
 #let qr-panel(url, label: "GitHub") = align(center + top)[
   #block(width: 64mm)[
     #align(center)[
@@ -93,6 +122,30 @@
     #text(size: 15pt)[#label]
   ]
 ]
+
+#let main_py_flow = (
+  "flowchart LR\n" +
+  "  subgraph input[入力]\n" +
+  "    cam[Webカメラ映像]\n" +
+  "  end\n" +
+  "  subgraph estimate[姿勢推定]\n" +
+  "    metrabs[MeTRAbsで姿勢推定]\n" +
+  "    pose3d[3次元の関節座標]\n" +
+  "    select[腰と両足の座標を抽出]\n" +
+  "  end\n" +
+  "  subgraph output[VR送信]\n" +
+  "    convert[VRChat用の座標系に変換]\n" +
+  "    osc[OSCでトラッカー位置を送信]\n" +
+  "    avatar[アバター動作に反映]\n" +
+  "  end\n" +
+  "  cam --> metrabs\n" +
+  "  metrabs --> pose3d\n" +
+  "  pose3d --> select\n" +
+  "  select --> convert\n" +
+  "  convert --> osc\n" +
+  "  osc --> avatar\n" +
+  "  avatar -. リアルタイムに繰り返し .-> cam\n"
+)
 
 #block(inset: 4mm)[
   #grid(
@@ -166,17 +219,17 @@
           このように、本研究では「単眼映像の取得」「3D姿勢推定」「座標系の補正」「VR向け信号としての送信」を一連のリアルタイム処理パイプラインとして構成した。
           #v(3mm)
           #align(center)[
-            #mermaid(
-              "flowchart LR\n  cam[Web Camera] --> metrabs[MeTRAbs]\n  metrabs --> adjust[Coordinate Fix]\n  adjust --> godot[Godot]\n  godot --> osc[VRChat OSC]",
-            )
+            #mermaid(main_py_flow)
           ]
           #v(1.5mm)
           #mini-caption[
-            処理パイプラインを Mermaid で図示した。
+            動作フロー図
           ]
           #v(3mm)
-          #align(center)[
-            #image("assets/vrchat-tracking-demo.png", width: 78%)
+          #demo-flow()
+          #v(1.5mm)
+          #mini-caption[
+            カメラ映像からVRまでの大まかな概要
           ]
         ],
         level: 2,
