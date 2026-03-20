@@ -24,7 +24,9 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Install Nix
-        uses: DeterminateSystems/determinate-nix-action@v3
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build PDF and redirect page for Pages
         run: |
