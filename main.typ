@@ -44,19 +44,6 @@
   #body
 ]
 
-#let image-box(label, height: 42mm, fill: rgb("#f1f1f1")) = rect(
-  width: 100%,
-  height: height,
-  radius: 1.5mm,
-  stroke: 0.6pt + rgb("#cfcfcf"),
-  fill: fill,
-  inset: 0pt,
-)[
-  #align(center + horizon)[
-    #text(size: 17pt, fill: rgb("#666666"))[#label]
-  ]
-]
-
 #let mini-caption(text-body) = align(center)[
   #text(size: 16pt, fill: rgb("#444444"))[#text-body]
 ]
@@ -102,24 +89,15 @@
     ]
     #v(2.5mm)
     #align(center)[
-      #text(size: 14pt, fill: rgb("#555555"), font: "Noto Sans")[#label]
+      #text(size: 14pt, fill: rgb("#555555"))[#label]
     ]
     #v(0.8mm)
     #align(center)[
       #text(
         size: 11.5pt,
         fill: rgb("#555555"),
-        font: "Noto Sans",
       )[#url]
     ]
-  ]
-]
-
-#let swatch(color, label) = [
-  #align(center)[
-    #circle(radius: 9mm, fill: color, stroke: none)
-    #v(2.5mm)
-    #text(size: 15pt)[#label]
   ]
 ]
 
@@ -129,33 +107,58 @@
     columns: (auto, 1fr),
     column-gutter: 3mm,
     align: (left, top),
-    [#text(weight: "bold")[#label]],
-    [#body],
+    [#text(weight: "bold")[#label]], [#body],
+  )
+]
+
+#let info-card(title, body) = rect(
+  width: 100%,
+  radius: 1.8mm,
+  inset: 3.5mm,
+  fill: light,
+  stroke: 0.6pt + rgb("#d4d4d4"),
+)[
+  #text(size: 18pt, weight: "bold", fill: border)[#title]
+  #v(1.8mm)
+  #body
+]
+
+#let spec-item(label, body) = block(width: 100%)[
+  #grid(
+    columns: (32mm, 1fr),
+    column-gutter: 2.5mm,
+    align: (left, top),
+    [
+      #text(size: 17pt, weight: "bold", fill: rgb("#555555"))[#label]
+    ],
+    [
+      #text(size: 18pt)[#body]
+    ],
   )
 ]
 
 #let main_py_flow = (
-  "flowchart LR\n" +
-  "  subgraph input[入力]\n" +
-  "    cam[Webカメラ映像]\n" +
-  "  end\n" +
-  "  subgraph estimate[姿勢推定]\n" +
-  "    metrabs[MeTRAbsで姿勢推定]\n" +
-  "    pose3d[3次元の関節座標]\n" +
-  "    select[腰と両足の座標を抽出]\n" +
-  "  end\n" +
-  "  subgraph output[VR送信]\n" +
-  "    convert[VRChat用の座標系に変換]\n" +
-  "    osc[OSCでトラッカー位置を送信]\n" +
-  "    avatar[アバター動作に反映]\n" +
-  "  end\n" +
-  "  cam --> metrabs\n" +
-  "  metrabs --> pose3d\n" +
-  "  pose3d --> select\n" +
-  "  select --> convert\n" +
-  "  convert --> osc\n" +
-  "  osc --> avatar\n" +
-  "  avatar -. リアルタイムに繰り返し .-> cam\n"
+  "flowchart LR\n"
+    + "  subgraph input[入力]\n"
+    + "    cam[Webカメラ映像]\n"
+    + "  end\n"
+    + "  subgraph estimate[姿勢推定]\n"
+    + "    metrabs[MeTRAbsで姿勢推定]\n"
+    + "    pose3d[3次元の関節座標]\n"
+    + "    select[腰と両足の座標を抽出]\n"
+    + "  end\n"
+    + "  subgraph output[VR送信]\n"
+    + "    convert[VRChat用の座標系に変換]\n"
+    + "    osc[OSCでトラッカー位置を送信]\n"
+    + "    avatar[アバター動作に反映]\n"
+    + "  end\n"
+    + "  cam --> metrabs\n"
+    + "  metrabs --> pose3d\n"
+    + "  pose3d --> select\n"
+    + "  select --> convert\n"
+    + "  convert --> osc\n"
+    + "  osc --> avatar\n"
+    + "  avatar -. リアルタイムに繰り返し .-> cam\n"
 )
 
 #block(inset: 4mm)[
@@ -168,7 +171,7 @@
         size: 60pt,
         weight: "bold",
       )[単眼カメラを用いたVR向け仮想トラッカーの制作]
-      #v(4mm)
+      #v(3.5mm)
       #text(size: 28pt)[著者: 野田蒼馬]
       #linebreak()
       #text(size: 22pt, fill: rgb("#555555"))[N高等学校]
@@ -190,7 +193,7 @@
       #section(
         [主張],
         [
-          一般的なWebカメラのみでVRChatにおけるフルトラッキング相当の体験を実現できるかを検証し、その課題と活用可能性を明らかにする。
+          一般的なWebカメラのみで、VRChatにおける腰・脚の位置追従をどこまで実現できるかを検証し、実用化に向けた課題を整理した。
         ],
       )
 
@@ -212,7 +215,7 @@
       #section(
         [目的],
         [
-          本研究の目的は、一般的なWebカメラを用いて、VRChat上でフルトラッキング相当の身体表現を実現することである。特に、専用の物理トラッカーを十分に用意できない環境においても、実用的な身体トラッキング情報を生成し、アバター操作に利用できる仕組みの構築を目指した。
+          本研究では、一般的なWebカメラで推定した3次元姿勢をVRChatで扱えるトラッキング信号へ変換し、低コストな身体トラッキング手法として利用できるかを検証した。
           #parbreak()
           単に姿勢を推定するだけでなく、推定結果をVR空間で扱えるトラッキング信号として整形し、実際のアプリケーションで利用可能な形で出力することを重視した。これにより、低コストかつ導入しやすい新たなFBT手法の可能性を検討した。
         ],
@@ -223,13 +226,27 @@
       #section(
         [手法],
         [
-          本手法では、まず単眼Webカメラから取得した映像に対して、3次元人体姿勢推定モデルである #link("https://github.com/isarandi/metrabs")[MeTRAbs] を適用し、人物の関節位置を三次元座標として推定した。得られた推定結果は、そのままではVR用途に適した形式ではないため、VR空間で利用しやすい身体位置データへ変換・整形した。
-          #parbreak()
-          実験は NixOS 25.11 (x86_64) 上で実施し、GPU には NVIDIA GeForce RTX 5070 Ti を使用した。入力映像は Microsoft LifeCam HD-3000 から取得し、解像度 640 × 480、30 fps で処理した。また、3次元姿勢推定には PyTorch 版 MeTRAbs モデルを用い、モデル入力解像度は 384 × 384 とした。
+          単眼Webカメラから取得した映像に対して、3次元人体姿勢推定モデルである #link("https://github.com/isarandi/metrabs")[MeTRAbs] を適用し、人物の関節位置を三次元座標として推定した。推定結果から腰と両足の情報を抽出し、VRChat向けのトラッキング信号へ変換した。
           #parbreak()
           次に、整形後のデータをGodotへ送信し、アプリケーション側でトラッカー相当の位置情報として扱えるようにした。最終的には、VRChat OSCを通じて各部位のトラッキングデータを送信し、アバターの身体動作に反映させた。
           #parbreak()
           このように、本研究では「単眼映像の取得」「3D姿勢推定」「座標系の補正」「VR向け信号としての送信」を一連のリアルタイム処理パイプラインとして構成した。
+          #info-card(
+            [実験条件],
+            [
+              #spec-item([OS], [NixOS 25.11 (x86_64)])
+              #v(1mm)
+              #spec-item([GPU], [NVIDIA GeForce RTX 5070 Ti])
+              #v(1mm)
+              #spec-item([カメラ], [Microsoft LifeCam HD-3000])
+              #v(1mm)
+              #spec-item([入力映像], [640 × 480, 30 fps])
+              #v(1mm)
+              #spec-item([推定モデル], [PyTorch 版 MeTRAbs])
+              #v(1mm)
+              #spec-item([入力解像度], [384 × 384])
+            ],
+          )
           #v(3mm)
           #align(center)[
             #mermaid(main_py_flow)
@@ -257,7 +274,7 @@
           #parbreak()
           これに対して本手法は、一般的なWebカメラのみで動作するため、導入コストを大きく抑えられ、設置や使用の手軽さに優れるという利点がある。しかしその反面、映像ベースの推定であるため遮蔽や処理遅延の影響を受けやすく、さらに関節の回転情報を直接得られないという構造的な課題を持つ。
           #parbreak()
-          したがって、本手法は低コスト性と導入容易性に優れる一方で、安定性や情報量の面では既存方式に及ばない部分がある。
+          本手法は導入のしやすさと低コスト性に優れる一方で、回転情報と安定性では物理トラッカーに及ばない。
         ],
       )
     ],
@@ -277,7 +294,7 @@
           )
           #v(1.5mm)
           #mini-caption[
-            推論時間の比較。アイドル時に対してゲーム実行時は平均遅延が増加し、追従性の低下が見られた。
+            推論時間の比較。ゲーム実行時はアイドル時より平均遅延が増加し、追従性が低下した。
           ]
         ],
       )
@@ -304,7 +321,9 @@
           #reference-item("[1]", [
             isarandi, "metrabs," GitHub Repository.
             #h(1.5mm)
-            #link("https://github.com/isarandi/metrabs")[github.com/isarandi/metrabs]
+            #link(
+              "https://github.com/isarandi/metrabs",
+            )[github.com/isarandi/metrabs]
           ])
           #v(1.2mm)
           #reference-item("[2]", [
@@ -316,7 +335,9 @@
           #reference-item("[3]", [
             VRChat, "OSC Trackers."
             #h(1.5mm)
-            #link("https://docs.vrchat.com/docs/osc-trackers")[docs.vrchat.com/docs/osc-trackers]
+            #link(
+              "https://docs.vrchat.com/docs/osc-trackers",
+            )[docs.vrchat.com/docs/osc-trackers]
           ])
           #v(1.2mm)
         ],
