@@ -118,7 +118,7 @@
   #v(8mm)
 
   #grid(
-    columns: (1.18fr, 0.82fr),
+    columns: (1fr, 1fr),
     column-gutter: 10mm,
     align: (left, top),
     [
