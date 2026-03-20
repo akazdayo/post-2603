@@ -123,6 +123,17 @@
   ]
 ]
 
+#let reference-item(label, body) = block(width: 100%)[
+  #set text(size: 18pt)
+  #grid(
+    columns: (auto, 1fr),
+    column-gutter: 3mm,
+    align: (left, top),
+    [#text(weight: "bold")[#label]],
+    [#body],
+  )
+]
+
 #let main_py_flow = (
   "flowchart LR\n" +
   "  subgraph input[入力]\n" +
@@ -290,11 +301,24 @@
       #section(
         [参考文献],
         [
-          [1] isarandi, metrabs, GitHub Repository.
-          #linebreak()
-          [2] https://github.com/isarandi/metrabs
-          #linebreak()
-          [3] https://github.com/akazdayo
+          #reference-item("[1]", [
+            isarandi, "metrabs," GitHub Repository.
+            #h(1.5mm)
+            #link("https://github.com/isarandi/metrabs")[github.com/isarandi/metrabs]
+          ])
+          #v(1.2mm)
+          #reference-item("[2]", [
+            I. Sarandi et al., "MeTRAbs: Metric-Scale Truncation-Robust Heatmaps for Absolute 3D Human Pose Estimation," arXiv:2007.07227, 2020.
+            #h(1.5mm)
+            #link("https://arxiv.org/abs/2007.07227")[arXiv]
+          ])
+          #v(1.2mm)
+          #reference-item("[3]", [
+            VRChat, "OSC Trackers."
+            #h(1.5mm)
+            #link("https://docs.vrchat.com/docs/osc-trackers")[docs.vrchat.com/docs/osc-trackers]
+          ])
+          #v(1.2mm)
         ],
       )
     ],
