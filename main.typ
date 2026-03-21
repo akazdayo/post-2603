@@ -52,28 +52,35 @@
   #text(size: 28pt, weight: "bold", fill: border)[#sym.arrow.r]
 ]
 
+#let flow-image(path) = block(width: 100%, height: 78mm)[
+  #align(center + horizon)[
+    #image(path, height: 78mm)
+  ]
+]
+
 #let demo-flow() = align(center)[
   #grid(
     columns: (1fr, auto, 1fr, auto, 1fr),
+    rows: (auto, auto),
     column-gutter: 2.5mm,
+    row-gutter: 1.2mm,
     align: (center, center),
     [
-      #image("assets/cam2.png", width: 100%)
-      #v(1.2mm)
-      #mini-caption[実カメラ映像]
+      #flow-image("assets/cam2_detected.png")
     ],
     [#flow-arrow()],
     [
-      #image("assets/poses.png", width: 100%)
-      #v(1.2mm)
-      #mini-caption[姿勢推定結果]
+      #flow-image("assets/cam2_metrabs_3d_plot.png")
     ],
     [#flow-arrow()],
     [
-      #image("assets/vrchat-tracking-demo.png", width: 100%)
-      #v(1.2mm)
-      #mini-caption[VRChat 反映結果]
+      #flow-image("assets/vrchat-tracking-demo.png")
     ],
+    [#mini-caption[実カメラ映像]],
+    [],
+    [#mini-caption[姿勢推定結果]],
+    [],
+    [#mini-caption[VRChat 反映結果]],
   )
 ]
 
@@ -119,20 +126,21 @@
   stroke: 0.6pt + rgb("#d4d4d4"),
 )[
   #text(size: 18pt, weight: "bold", fill: border)[#title]
-  #v(1.8mm)
+  #v(1.2mm)
   #body
 ]
 
 #let spec-item(label, body) = block(width: 100%)[
+  #set text(top-edge: "cap-height", bottom-edge: "baseline")
   #grid(
     columns: (32mm, 1fr),
-    column-gutter: 2.5mm,
+    column-gutter: 2mm,
     align: (left, top),
     [
-      #text(size: 17pt, weight: "bold", fill: rgb("#555555"))[#label]
+      #text(size: 16pt, weight: "bold", fill: rgb("#555555"))[#label]
     ],
     [
-      #text(size: 18pt)[#body]
+      #text(size: 17pt)[#body]
     ],
   )
 ]
@@ -237,15 +245,15 @@
             [実験条件],
             [
               #spec-item([OS], [NixOS 25.11 (x86_64)])
-              #v(1mm)
+              #v(-1.1mm)
               #spec-item([GPU], [NVIDIA GeForce RTX 5070 Ti])
-              #v(1mm)
+              #v(-1.1mm)
               #spec-item([カメラ], [Microsoft LifeCam HD-3000])
-              #v(1mm)
+              #v(-1.1mm)
               #spec-item([入力映像], [640 × 480, 30 fps])
-              #v(1mm)
+              #v(-1.1mm)
               #spec-item([推定モデル], [PyTorch 版 MeTRAbs])
-              #v(1mm)
+              #v(-1.1mm)
               #spec-item([入力解像度], [384 × 384])
             ],
           )
@@ -260,8 +268,12 @@
           #v(3mm)
           #demo-flow()
           #v(1.5mm)
-          #mini-caption[
-            カメラ映像からVRまでの大まかな概要
+          #block(width: 100%, height: 8mm)[
+            #align(center + horizon)[
+              #mini-caption[
+                カメラ映像からVRまでの大まかな概要
+              ]
+            ]
           ]
         ],
         level: 2,
