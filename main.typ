@@ -310,6 +310,32 @@
       #v(7mm)
 
       #section(
+        [失敗例],
+        [
+          回転軸を取得できないため、腰の回転が発生した際にトラッキングが極端に破綻する現象が発生した。
+          #v(3mm)
+          #grid(
+            columns: (1fr, 1fr),
+            column-gutter: 3mm,
+            align: (center, top),
+            [
+              #flow-image("assets/failed_real.png")
+              #v(1.2mm)
+              #mini-caption[実際の姿勢]
+            ],
+            [
+              #flow-image("assets/failed_vrchat.png")
+              #v(1.2mm)
+              #mini-caption[VRChat での反映]
+            ],
+          )
+        ],
+        level: 2,
+      )
+
+      #v(7mm)
+
+      #section(
         [考察],
         [
           本手法は物理トラッカーの完全な代替には至っていないものの、低コストに身体位置を推定し、VR向け入力として利用できる可能性を示した。用途を限定すれば、実用的な補助手法として十分に有用である。
