@@ -52,13 +52,13 @@
   #text(size: 28pt, weight: "bold", fill: border)[#sym.arrow.r]
 ]
 
-#let flow-image(path) = block(width: 100%, height: 78mm)[
+#let flow-image(path, height: 78mm) = block(width: 100%, height: height)[
   #align(center + horizon)[
-    #image(path, height: 78mm)
+    #image(path, height: height)
   ]
 ]
 
-#let demo-flow() = align(center)[
+#let demo-flow(image-height: 96mm) = align(center)[
   #grid(
     columns: (1fr, auto, 1fr, auto, 1fr),
     rows: (auto, auto),
@@ -66,15 +66,15 @@
     row-gutter: 1.2mm,
     align: (center, center),
     [
-      #flow-image("assets/cam2_detected.png")
+      #flow-image("assets/cam2_detected.png", height: image-height)
     ],
     [#flow-arrow()],
     [
-      #flow-image("assets/cam2_metrabs_3d_plot.png")
+      #flow-image("assets/cam2_metrabs_3d_plot.png", height: image-height)
     ],
     [#flow-arrow()],
     [
-      #flow-image("assets/vrchat-tracking-demo.png")
+      #flow-image("assets/vrchat-tracking-demo.png", height: image-height)
     ],
     [#mini-caption[実カメラ映像]],
     [],
@@ -319,12 +319,12 @@
             column-gutter: 3mm,
             align: (center, top),
             [
-              #flow-image("assets/failed_real.png")
+              #flow-image("assets/failed_real.png", height: 96mm)
               #v(1.2mm)
               #mini-caption[実際の姿勢]
             ],
             [
-              #flow-image("assets/failed_vrchat.png")
+              #flow-image("assets/failed_vrchat.png", height: 96mm)
               #v(1.2mm)
               #mini-caption[VRChat での反映]
             ],
