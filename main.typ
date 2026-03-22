@@ -130,6 +130,37 @@
   #body
 ]
 
+#let compare-head(body) = rect(
+  width: 100%,
+  radius: 1.2mm,
+  inset: (x: 2.2mm, y: 1.8mm),
+  fill: border,
+)[
+  #align(center + horizon)[
+    #text(size: 15.5pt, weight: "bold", fill: white)[#body]
+  ]
+]
+
+#let compare-label(body) = rect(
+  width: 100%,
+  radius: 1.2mm,
+  inset: (x: 2.2mm, y: 1.8mm),
+  fill: rgb("#ececec"),
+  stroke: 0.5pt + rgb("#d8d8d8"),
+)[
+  #text(size: 15.5pt, weight: "bold", fill: border)[#body]
+]
+
+#let compare-cell(body, fill: white) = rect(
+  width: 100%,
+  radius: 1.2mm,
+  inset: (x: 2.2mm, y: 1.8mm),
+  fill: fill,
+  stroke: 0.5pt + rgb("#d8d8d8"),
+)[
+  #text(size: 15.5pt)[#body]
+]
+
 #let spec-item(label, body) = block(width: 100%)[
   #set text(top-edge: "cap-height", bottom-edge: "baseline")
   #grid(
@@ -283,6 +314,33 @@
           物理トラッカー方式は、専用センサによって安定した位置情報と回転情報を高精度に取得できる。その一方で、機器価格や装着の煩雑さが導入障壁になる。
           #parbreak()
           本手法は一般的なWebカメラだけで動作するため、低コストかつ導入が容易である。ただし、遮蔽や処理遅延の影響を受けやすく、関節の回転情報を直接得られない。
+          #v(3mm)
+          #grid(
+            columns: (34mm, 1fr, 1fr),
+            column-gutter: 1mm,
+            row-gutter: 1mm,
+            [#compare-head[項目]],
+            [#compare-head[物理トラッカー]],
+            [#compare-head[本手法]],
+            [#compare-label[導入コスト]],
+            [#compare-cell[高い]],
+            [#compare-cell([低い], fill: light)],
+            [#compare-label[装着・準備]],
+            [#compare-cell[腰や脚に機器を装着]],
+            [#compare-cell([カメラ設置のみ], fill: light)],
+            [#compare-label[位置取得]],
+            [#compare-cell[高精度で安定]],
+            [#compare-cell([大まかな位置は追従], fill: light)],
+            [#compare-label[回転取得]],
+            [#compare-cell[可能]],
+            [#compare-cell([不可], fill: light)],
+            [#compare-label[遮蔽耐性]],
+            [#compare-cell[高い]],
+            [#compare-cell([低い], fill: light)],
+            [#compare-label[遅延]],
+            [#compare-cell[小さい]],
+            [#compare-cell([負荷増加で大きくなる], fill: light)],
+          )
         ],
       )
     ],
