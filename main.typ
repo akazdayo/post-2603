@@ -1,5 +1,5 @@
 #import "@preview/zebra:0.1.0": qrcode
-#import "@preview/mmdr:0.2.1": mermaid
+#import "@preview/mmdr:0.2.1": mermaid-svg
 
 #set page(
   paper: "a0",
@@ -58,7 +58,7 @@
   ]
 ]
 
-#let demo-flow(image-height: 96mm) = align(center)[
+#let demo-flow(image-height: 68mm) = align(center)[
   #grid(
     columns: (1fr, auto, 1fr, auto, 1fr),
     rows: (auto, auto),
@@ -177,7 +177,7 @@
 ]
 
 #let main_py_flow = (
-  "flowchart LR\n"
+  "flowchart TD\n"
     + "  subgraph input[入力]\n"
     + "    cam[Webカメラ映像]\n"
     + "  end\n"
@@ -197,7 +197,20 @@
     + "  select --> convert\n"
     + "  convert --> osc\n"
     + "  osc --> avatar\n"
-    + "  avatar -. リアルタイムに繰り返し .-> cam\n"
+    + "  avatar --> cam\n"
+)
+
+#let main-flow-diagram(height: 200mm) = image(
+  bytes(
+    mermaid-svg(
+      main_py_flow,
+      layout: (
+        node_spacing: 42,
+      ),
+    ),
+  ),
+  format: "svg",
+  height: height,
 )
 
 #block(inset: 4mm)[
@@ -268,39 +281,44 @@
           単眼Webカメラ映像に3次元人体姿勢推定モデル #link("https://github.com/isarandi/metrabs")[MeTRAbs] を適用し、関節位置を三次元座標として推定した。推定結果から腰と両足の情報を抽出し、VRChat向けのトラッキング信号へ変換した。
           #parbreak()
           整形後のデータをVRChat OSCを通じて各部位のトラッキングデータとして送信した。処理全体は「映像取得」「3D姿勢推定」「座標系補正」「VR向け送信」からなるリアルタイムパイプラインとして構成した。
-          #info-card(
-            [実験条件],
+          #v(2.5mm)
+          #grid(
+            columns: (0.42fr, 0.58fr),
+            column-gutter: 4mm,
+            align: (left, top),
             [
-              #spec-item([OS], [NixOS 25.11 (x86_64)])
-              //#v(-1.1mm)
-              #spec-item([GPU], [NVIDIA GeForce RTX 5070 Ti])
-              //#v(-1.1mm)
-              #spec-item([カメラ], [Microsoft LifeCam HD-3000])
-              //#v(-1.1mm)
-              #spec-item([入力映像], [640 × 480, 30 fps])
-              //#v(-1.1mm)
-              #spec-item([推定モデル], [PyTorch 版 MeTRAbs])
-              //#v(-1.1mm)
-              #spec-item([入力解像度], [384 × 384])
+              #info-card(
+                [実験条件],
+                [
+                  #spec-item([OS], [NixOS 25.11 (x86_64)])
+                  //#v(-1.1mm)
+                  #spec-item([GPU], [NVIDIA GeForce RTX 5070 Ti])
+                  //#v(-1.1mm)
+                  #spec-item([カメラ], [Microsoft LifeCam HD-3000])
+                  //#v(-1.1mm)
+                  #spec-item([入力映像], [640 × 480, 30 fps])
+                  //#v(-1.1mm)
+                  #spec-item([推定モデル], [PyTorch 版 MeTRAbs])
+                  //#v(-1.1mm)
+                  #spec-item([入力解像度], [384 × 384])
+                ],
+              )
+            ],
+            [
+              #align(center)[
+                #main-flow-diagram(height: 200mm)
+              ]
+              #v(1.2mm)
+              #mini-caption[
+                動作フロー図
+              ]
             ],
           )
           #v(3mm)
-          #align(center)[
-            #mermaid(main_py_flow)
-          ]
-          #v(1.5mm)
-          #mini-caption[
-            動作フロー図
-          ]
-          #v(3mm)
           #demo-flow()
-          #v(1.5mm)
-          #block(width: 100%, height: 8mm)[
-            #align(center + horizon)[
-              #mini-caption[
-                カメラ映像からVRまでの大まかな概要
-              ]
-            ]
+          #v(1.2mm)
+          #mini-caption[
+            カメラ映像からVRまでの大まかな概要
           ]
         ],
         level: 2,
